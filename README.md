@@ -5,7 +5,324 @@ Slack Connect is a full-stack TypeScript application that allows you to connect 
 ##### ✨ Features
 
 - 🔐 **Secure Slack OAuth 2.0 Integration**
-- 💬 **Send Immediate Messages** to any channel or DM
+- 💬##### 🚀 Production Deployment Guide
+
+This guide will help you deploy your Slack Connect app to production using **Render** (backend) and **Vercel** (frontend).
+
+---
+
+## 📋 Deployment Overview
+
+- **Backend**: Deploy to [Render](https://render.com) (free tier available)
+- **Frontend**: Deploy to [Vercel](https://vercel.com) (free tier available)
+- **Database**: SQLite (included with backend deployment)
+
+---
+
+## 🛠️ Step 1: Prepare Your Code
+
+### 1.1 Required Files for Deployment
+
+Make sure your project has these essential files:
+
+**Backend Files:**
+- `backend/Procfile` - Tells Render how to start your app
+- `backend/package.json` - Contains proper scripts and dependencies
+- `backend/tsconfig.json` - TypeScript configuration
+
+**Frontend Files:**
+- `frontend/vercel.json` - Configures SPA routing for Vercel
+- `frontend/public/_redirects` - Backup routing configuration
+- `frontend/package.json` - Contains build scripts
+
+**Create missing files if needed:**
+
+```bash
+# Create backend/Procfile
+echo "web: npm run build && npm start" > backend/Procfile
+
+# Create frontend/vercel.json
+cat > frontend/vercel.json << 'EOF'
+{
+  "rewrites": [
+    { "source": "/auth-success", "destination": "/index.html" },
+    { "source": "/auth-error", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
+    { "source": "/scheduled", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+EOF
+
+# Create frontend/public/_redirects
+mkdir -p frontend/public
+echo "/*    /index.html   200" > frontend/public/_redirects
+```
+
+### 1.2 Push to GitHub
+
+Make sure your code is pushed to a GitHub repository:
+
+```bash
+# Initialize git (if not done already)
+git init
+git add .
+git commit -m "Initial commit"
+
+# Add your GitHub repo as remote
+git remote add origin https://github.com/yourusername/your-repo-name.git
+git push -u origin main
+```
+
+---
+
+## 🌐 Step 2: Deploy Backend to Render
+
+### 2.1 Create Render Account
+
+1. Go to [render.com](https://render.com)
+2. Sign up with GitHub
+3. Click **"New +"** → **"Web Service"**
+
+### 2.2 Connect Your Repository
+
+1. Select **"Build and deploy from a Git repository"**
+2. Connect your GitHub account
+3. Select your repository
+4. Click **"Connect"**
+
+### 2.3 Configure Backend Service
+
+**Basic Settings:**
+- **Name**: `your-app-name-backend` (choose any unique name)
+- **Region**: Select closest to your users
+- **Branch**: `main`
+- **Root Directory**: `backend`
+- **Runtime**: `Node`
+
+**Build Settings:**
+- **Build Command**: `npm install && npm run build`
+- **Start Command**: `npm start`
+
+### 2.4 Set Environment Variables
+
+In the **Environment** section, add these variables:
+
+```bash
+NODE_ENV=production
+SLACK_CLIENT_ID=your_slack_client_id
+SLACK_CLIENT_SECRET=your_slack_client_secret  
+SLACK_APP_ID=your_slack_app_id
+SLACK_STATE_SECRET=your_random_secret
+FRONTEND_URL=https://your-frontend-domain.vercel.app
+BACKEND_URL=https://your-backend-domain.onrender.com
+DATABASE_PATH=./slack_connect.db
+```
+
+**⚠️ Important**: Replace the values above with:
+- Your actual Slack app credentials (from Slack API dashboard)
+- Your actual frontend/backend URLs (you'll get these after deployment)
+- A random string for `SLACK_STATE_SECRET`
+
+### 2.5 Deploy Backend
+
+1. Click **"Create Web Service"**
+2. Wait for deployment to complete (3-5 minutes)
+3. Copy your backend URL (e.g., `https://your-app.onrender.com`)
+
+---
+
+## 🎨 Step 3: Deploy Frontend to Vercel
+
+### 3.1 Create Vercel Account
+
+1. Go to [vercel.com](https://vercel.com)
+2. Sign up with GitHub
+3. Click **"New Project"**
+
+### 3.2 Import Your Repository
+
+1. Select **"Import Git Repository"**
+2. Choose your GitHub repository
+3. Click **"Import"**
+
+### 3.3 Configure Frontend Project
+
+**Project Settings:**
+- **Framework Preset**: `Vite`
+- **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Install Command**: `npm install`
+
+### 3.4 Set Environment Variables
+
+In **Environment Variables**, add:
+
+```bash
+VITE_API_BASE_URL=https://your-backend-domain.onrender.com/api
+```
+
+Replace `your-backend-domain.onrender.com` with your actual Render backend URL.
+
+### 3.5 Deploy Frontend
+
+1. Click **"Deploy"**
+2. Wait for deployment to complete (1-2 minutes)
+3. Copy your frontend URL (e.g., `https://your-app.vercel.app`)
+
+---
+
+## 🔧 Step 4: Update Backend Environment
+
+Now that you have your frontend URL, update your backend:
+
+1. Go to your **Render dashboard**
+2. Select your backend service
+3. Go to **Environment** tab
+4. Update `FRONTEND_URL` with your actual Vercel URL:
+   ```
+   FRONTEND_URL=https://your-app.vercel.app
+   ```
+5. Click **"Save Changes"** (this will redeploy your backend)
+
+---
+
+## 🔐 Step 5: Update Slack App Settings
+
+### 5.1 Update OAuth Redirect URLs
+
+1. Go to your [Slack API dashboard](https://api.slack.com/apps)
+2. Select your app
+3. Go to **"OAuth & Permissions"**
+4. Under **"Redirect URLs"**, add your production backend URL:
+   ```
+   https://your-backend-domain.onrender.com/api/auth/slack/callback
+   ```
+5. Remove any localhost URLs
+6. Click **"Save URLs"**
+
+---
+
+## ✅ Step 6: Test Your Deployment
+
+### 6.1 Test Backend Health
+
+Visit: `https://your-backend-domain.onrender.com/api/health`
+
+You should see: `{"status":"OK","timestamp":"..."}`
+
+### 6.2 Test Frontend
+
+Visit: `https://your-app.vercel.app`
+
+You should see your Slack Connect homepage.
+
+### 6.3 Test Full OAuth Flow
+
+1. Click **"Connect to Slack"** on your frontend
+2. You should be redirected to Slack for authorization
+3. After authorizing, you should be redirected back to your app
+4. You should see the dashboard with your Slack workspace info
+
+---
+
+## 🐛 Troubleshooting Deployment
+
+### Backend Issues
+
+**Build Fails:**
+- Check if all dependencies are in `package.json` dependencies (not devDependencies)
+- Make sure TypeScript builds without errors locally
+
+**502 Bad Gateway:**
+- Check Render logs for error messages
+- Verify all environment variables are set correctly
+- Make sure `DATABASE_PATH=./slack_connect.db`
+
+**OAuth Errors:**
+- Verify Slack redirect URLs match your deployed backend URL exactly
+- Check that all Slack environment variables are correct
+
+### Frontend Issues
+
+**404 on Routes:**
+- Make sure `vercel.json` exists in your frontend folder with SPA routing config
+- Verify Vercel root directory is set to `frontend`
+
+**API Errors:**
+- Check that `VITE_API_BASE_URL` points to your backend with `/api` suffix
+- Verify backend is accessible from frontend domain (CORS)
+
+### Common Environment Variable Issues
+
+**Backend Environment Variables:**
+```bash
+# ✅ Correct format
+FRONTEND_URL=https://your-app.vercel.app
+BACKEND_URL=https://your-backend.onrender.com
+
+# ❌ Wrong - don't include trailing slashes
+FRONTEND_URL=https://your-app.vercel.app/
+BACKEND_URL=https://your-backend.onrender.com/
+```
+
+**Frontend Environment Variables:**
+```bash
+# ✅ Correct format  
+VITE_API_BASE_URL=https://your-backend.onrender.com/api
+
+# ❌ Wrong - missing /api or trailing slash
+VITE_API_BASE_URL=https://your-backend.onrender.com
+VITE_API_BASE_URL=https://your-backend.onrender.com/api/
+```
+
+---
+
+## 🔄 Updating Your Deployment
+
+### To Update Backend:
+1. Push changes to your GitHub repository
+2. Render will automatically redeploy
+
+### To Update Frontend:
+1. Push changes to your GitHub repository  
+2. Vercel will automatically redeploy
+
+### To Update Environment Variables:
+- **Render**: Dashboard → Service → Environment → Update → Save Changes
+- **Vercel**: Dashboard → Project → Settings → Environment Variables
+
+---
+
+## 💰 Cost Information
+
+**Free Tier Limits:**
+- **Render**: 750 hours/month (enough for most projects)
+- **Vercel**: 100GB bandwidth, 6000 minutes build time/month
+
+**Scaling to Paid Plans:**
+- **Render**: $7/month for always-on service
+- **Vercel**: $20/month for Pro features
+
+---
+
+## 🎯 Quick Deployment Checklist
+
+- [ ] Code pushed to GitHub
+- [ ] Backend deployed to Render with correct environment variables
+- [ ] Frontend deployed to Vercel with correct API URL
+- [ ] Slack app redirect URLs updated to production URLs
+- [ ] Backend health endpoint returns 200 OK
+- [ ] Frontend loads without errors
+- [ ] Full OAuth flow works end-to-end
+- [ ] Can send/schedule messages successfully
+
+---
+
+**🎉 Congratulations! Your Slack Connect app is now live in production!**
+
+##### 📝 API Endpoints Messages** to any channel or DM
 - ⏰ **Schedule Messages** for future delivery
 - 📋 **Manage Scheduled Messages** (view, cancel)
 - 🔄 **Token Refresh** for continuous authentication
