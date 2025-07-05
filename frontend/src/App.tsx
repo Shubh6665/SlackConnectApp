@@ -7,6 +7,7 @@ import ScheduledMessages from './pages/ScheduledMessages';
 import AuthSuccess from './pages/AuthSuccess';
 import AuthError from './pages/AuthError';
 
+// Main App component with routing
 function App() {
   return (
     <SlackProvider>
