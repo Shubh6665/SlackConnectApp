@@ -44,7 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Health check endpoint
-app.get("/api/health", (req, res) => {
+app.get("/api/health", (req: express.Request, res: express.Response) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
