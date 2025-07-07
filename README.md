@@ -4,7 +4,7 @@ Slack Connect is a full-stack TypeScript application that allows you to connect 
 
 ---
 
-##### 📝 API Endpoints Messages** to any channel or DM
+##### 📝 API Endpoints Messages to any channel or DM
 - ⏰ **Schedule Messages** for future delivery
 - 📋 **Manage Scheduled Messages** (view, cancel)
 - 🔄 **Token Refresh** for continuous authentication
@@ -30,7 +30,7 @@ Slack Connect is a full-stack TypeScript application that allows you to connect 
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone <[your-repo-url](https://github.com/Shubh6665/SlackConnectApp)>
 cd SlackConnect
 
 # Install backend dependencies
