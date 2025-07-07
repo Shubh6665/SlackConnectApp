@@ -45,7 +45,7 @@ cd ..
 
 ###### Step 2: Create Slack App
 
-###### 2.1 Go to Slack API Dashboard
+##### 2.1 Go to Slack API Dashboard
 
 1. Visit https://api.slack.com/apps
 
@@ -55,7 +55,7 @@ cd ..
 5. Select your Slack workspace
 6. Click **"Create App"**
 
-###### 2.2 Configure OAuth & Permissions
+##### 2.2 Configure OAuth & Permissions
 
 1. In your app dashboard, go to **"OAuth & Permissions"** (left sidebar)
 2. Scroll down to **"Scopes"** section
@@ -68,7 +68,7 @@ cd ..
    - `im:read` - View basic information about direct messages
    - `mpim:read` - View basic information about group direct messages
 
-###### 2.3 Set Redirect URLs
+##### 2.3 Set Redirect URLs
 
 1. Still in **"OAuth & Permissions"**
 2. Scroll up to **"Redirect URLs"**
@@ -79,7 +79,7 @@ cd ..
 5. Click **"Add"**
 6. Click **"Save URLs"**
 
-###### 2.4 Get App Credentials
+##### 2.4 Get App Credentials
 
 1. Go to **"Basic Information"** (left sidebar)
 2. Scroll down to **"App Credentials"**
@@ -91,7 +91,7 @@ cd ..
 
 ###### Step 3: Environment Configuration
 
-###### 3.1 Backend Environment
+##### 3.1 Backend Environment
 
 ```bash
 cd backend
@@ -119,7 +119,7 @@ BACKEND_URL=https://localhost:3001
 DATABASE_PATH=./slack_connect.db
 ```
 
-###### 3.2 Frontend Environment
+##### 3.2 Frontend Environment
 
 ```bash
 cd frontend
@@ -135,7 +135,7 @@ VITE_API_BASE_URL=https://localhost:3001/api
 
 ###### Step 4: Run the Application
 
-###### 4.1 Start Backend (Terminal 1)
+##### 4.1 Start Backend (Terminal 1)
 
 ```bash
 cd backend
@@ -149,7 +149,7 @@ HTTPS Server is running on port 3001
 🔐 You need to accept the self-signed certificate!
 ```
 
-###### 4.2 Accept HTTPS Certificate
+##### 4.2 Accept HTTPS Certificate
 
 1. Open browser and go to: `https://localhost:3001/api/health`
 
