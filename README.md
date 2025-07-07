@@ -30,8 +30,8 @@ Slack Connect is a full-stack TypeScript application that allows you to connect 
 
 ```bash
 # Clone the repository
-git clone <https://github.com/Shubh6665/SlackConnectApp>
-cd SlackConnect
+git clone https://github.com/Shubh6665/SlackConnectApp
+cd SlackConnectApp
 
 # Install backend dependencies
 cd backend
