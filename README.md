@@ -5,7 +5,7 @@ Slack Connect is a full-stack TypeScript application that allows you to connect 
 ##### ✨ Features
 
 - 🔐 **Secure Slack OAuth 2.0 Integration**
-- 💬##### 🚀 Production Deployment Guide
+- #####  🚀 Production Deployment Guide
 
 This guide will help you deploy your Slack Connect app to production using **Render** (backend) and **Vercel** (frontend).
 
