@@ -45,7 +45,7 @@ cd ..
 
 ###### Step 2: Create Slack App
 
-########## 2.1 Go to Slack API Dashboard
+###### 2.1 Go to Slack API Dashboard
 
 1. Visit https://api.slack.com/apps
 
@@ -55,7 +55,7 @@ cd ..
 5. Select your Slack workspace
 6. Click **"Create App"**
 
-########## 2.2 Configure OAuth & Permissions
+###### 2.2 Configure OAuth & Permissions
 
 1. In your app dashboard, go to **"OAuth & Permissions"** (left sidebar)
 2. Scroll down to **"Scopes"** section
@@ -68,7 +68,7 @@ cd ..
    - `im:read` - View basic information about direct messages
    - `mpim:read` - View basic information about group direct messages
 
-########## 2.3 Set Redirect URLs
+###### 2.3 Set Redirect URLs
 
 1. Still in **"OAuth & Permissions"**
 2. Scroll up to **"Redirect URLs"**
@@ -79,7 +79,7 @@ cd ..
 5. Click **"Add"**
 6. Click **"Save URLs"**
 
-########## 2.4 Get App Credentials
+###### 2.4 Get App Credentials
 
 1. Go to **"Basic Information"** (left sidebar)
 2. Scroll down to **"App Credentials"**
@@ -91,7 +91,7 @@ cd ..
 
 ###### Step 3: Environment Configuration
 
-########## 3.1 Backend Environment
+###### 3.1 Backend Environment
 
 ```bash
 cd backend
@@ -119,7 +119,7 @@ BACKEND_URL=https://localhost:3001
 DATABASE_PATH=./slack_connect.db
 ```
 
-########## 3.2 Frontend Environment
+###### 3.2 Frontend Environment
 
 ```bash
 cd frontend
@@ -135,7 +135,7 @@ VITE_API_BASE_URL=https://localhost:3001/api
 
 ###### Step 4: Run the Application
 
-########## 4.1 Start Backend (Terminal 1)
+###### 4.1 Start Backend (Terminal 1)
 
 ```bash
 cd backend
@@ -149,7 +149,7 @@ HTTPS Server is running on port 3001
 🔐 You need to accept the self-signed certificate!
 ```
 
-########## 4.2 Accept HTTPS Certificate
+###### 4.2 Accept HTTPS Certificate
 
 1. Open browser and go to: `https://localhost:3001/api/health`
 
@@ -158,7 +158,7 @@ HTTPS Server is running on port 3001
 4. Click **"Proceed to localhost (unsafe)"** or **"Accept the risk"**
 5. You should see: `{"status":"OK","timestamp":"..."}`
 
-########## 4.3 Start Frontend (Terminal 2)
+##### 4.3 Start Frontend (Terminal 2)
 
 ```bash
 cd frontend
@@ -173,7 +173,7 @@ You should see:
 
 ###### Step 5: Install App to Slack Workspace
 
-########## 5.1 Install to Your Workspace
+###### 5.1 Install to Your Workspace
 
 1. In your Slack app dashboard, go to **"Install App"** (left sidebar)
 2. Click **"Install to Workspace"**
@@ -181,7 +181,7 @@ You should see:
 4. Copy the **"Bot User OAuth Token"** (starts with `xoxb-`)
 5. You can also find this in **"OAuth & Permissions"** section
 
-########## 5.2 Test the Connection
+###### 5.2 Test the Connection
 
 1. Open http://localhost:3000 in your browser
 
@@ -217,25 +217,25 @@ You should see:
 
 ###### Common Issues
 
-########## 1. "redirect_uri did not match" Error
+###### 1. "redirect_uri did not match" Error
 
 - Make sure your Slack app redirect URL is: `https://localhost:3001/api/auth/slack/callback`
 
 - Ensure you're using HTTPS (not HTTP)
 
-########## 2. "Certificate Error" in Browser
+###### 2. "Certificate Error" in Browser
 
 - You must accept the self-signed certificate first
 
 - Go to `https://localhost:3001/api/health` and accept the security warning
 
-########## 3. "Failed to connect to Slack" Error
+###### 3. "Failed to connect to Slack" Error
 
 - Check if backend is running on port 3001
 - Verify your Slack app credentials in `.env`
 - Make sure all required OAuth scopes are added
 
-########## 4. Messages Not Sending
+###### 4. Messages Not Sending
 
 - Ensure your bot is added to the channel
 - Check if your OAuth token is valid
@@ -243,7 +243,7 @@ You should see:
 
 ###### Development Tips
 
-########## Reset Database
+###### Reset Database
 
 ```bash
 cd backend
@@ -251,7 +251,7 @@ rm slack_connect.db
 npm run dev  # Database will be recreated
 ```
 
-########## Check Logs
+###### Check Logs
 
 Backend logs show important information:
 
@@ -259,7 +259,7 @@ Backend logs show important information:
 - Database operations
 - Message sending status
 
-########## HTTPS in Development
+###### HTTPS in Development
 
 This app uses HTTPS in development because Slack requires it for OAuth redirects. The self-signed certificate is automatically generated.
 
